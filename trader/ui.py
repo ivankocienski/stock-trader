@@ -18,9 +18,24 @@ color_bg = BLACK
 color_fg = WHITE
 
 key_up = pg.K_UP
+key_escape = pg.K_ESCAPE
+key_enter  = pg.K_RETURN
 key_down = pg.K_DOWN
 key_f1   = pg.K_F1
 key_f2   = pg.K_F2
+key_b    = pg.K_b
+key_backspace = pg.K_BACKSPACE
+
+key_0    = pg.K_0
+key_1    = pg.K_1
+key_2    = pg.K_2
+key_3    = pg.K_3
+key_4    = pg.K_4
+key_5    = pg.K_5
+key_6    = pg.K_6
+key_7    = pg.K_7
+key_8    = pg.K_8
+key_9    = pg.K_9
 
 def init(s):
     global screen

@@ -2,6 +2,8 @@
 from trader import ui
 
 class BaseScreen:
+    screen_name = 'none'
+
     def __init__(self, app):
         self.app = app
         
