@@ -67,6 +67,47 @@ def drawtext(x, y, msg):
     text_surface = font.render(msg, False, color_fg, color_bg) 
     screen.blit(text_surface, (x, y))
 
+def fill_box(x, y, w, h):
+    pass
+
+def draw_hline(x, y, length):
+    x *= 8
+    length *= 8 
+    y = y * 16 + 8 
+
+    global screen
+    global color_fg
+
+    pg.draw.line(screen, color_fg, (x, y), (x+length, y), 1)
+
+def draw_vline(x, y, length):
+    global screen
+    global color_fg
+
+    y *= 16
+    length *= 16 
+    x = x * 8 + 4 
+
+    pg.draw.line(screen, color_fg, (x, y), (x, y+length), 2)
+
+
+def draw_box(x, y, w, h):
+    global screen
+    global color_fg
+
+    x = x *  8 + 4 
+    y = y * 16 + 8 
+
+    w *= 8
+    h *= 16
+
+    pg.draw.line(screen, color_fg, (x, y), (x, y+h), 2)
+    pg.draw.line(screen, color_fg, (x+w, y), (x+w, y+h), 2)
+
+    pg.draw.line(screen, color_fg, (x, y), (x+w, y), 1)
+    pg.draw.line(screen, color_fg, (x, y+h), (x+w, y+h), 1)
+
+
 
 
 
