@@ -18,14 +18,18 @@ class App:
             self.active = False
             self.app = app
 
-        def show(self, t1, t2):
+        def show(self, t1, t2, callback):
             self.text1 = t1
             self.text2 = t2
             self.active = True
+            self.callback = callback
 
         def keydown(self, key):
             if key == ui.key_escape:
                 self.active = False
+                if self.callback:
+                    self.callback()
+
                 self.app.repaint()
 
         def is_active(self):
@@ -44,11 +48,15 @@ class App:
 
             width += 16
 
+            ui.set_bg_color(ui.BLUE)
+            ui.fill_box((100-width)/2, 16, width, height)
+
             ui.drawtext( (100-width1)/2, 17, self.text1)
             if(self.text2):
                 ui.drawtext( (100-width2)/2, 19, self.text2)
 
             ui.draw_box((100-width)/2, 16, width, height)
+            ui.set_bg_color(ui.BLACK)
 
 
     def _register_screen(self, obj):
@@ -88,8 +96,8 @@ class App:
     def repaint(self):
         self._repaint = True
 
-    def popup_message(self, text1, text2=None):
-        self._popup.show(text1, text2)
+    def popup_message(self, text1, text2=None, callback=None):
+        self._popup.show(text1, text2, callback)
 
     def set_screen(self, name, old_screen=None): 
         if name == 'old':

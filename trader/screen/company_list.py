@@ -14,7 +14,11 @@ class CompanyListScreen(BaseScreen):
 
     def activate(self):
         super().activate()
-        self.app.popup_message("Hello, World", "You have done a bad bad bad thing here")
+
+        def popup_done():
+            print("The popup has been hidden")
+
+        self.app.popup_message("Hello, World", "You have done a bad bad bad thing here", popup_done)
 
     def keydown(self, key):
         super().keydown(key)

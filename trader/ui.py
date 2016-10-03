@@ -9,7 +9,7 @@ BLACK  = (  0,   0,   0)
 RED    = (255,   0,   0)
 GREEN  = (  0, 255,   0)
 YELLOW = (200, 255,   0)
-BLUE   = (100, 100, 255)
+BLUE   = ( 50,  50, 255)
 
 screen = None
 font   = None
@@ -68,7 +68,16 @@ def drawtext(x, y, msg):
     screen.blit(text_surface, (x, y))
 
 def fill_box(x, y, w, h):
-    pass
+    global screen
+    global color_bg
+
+    x = x *  8
+    y = y * 16
+
+    w = (w+1) * 8
+    h = (h+1) * 16
+
+    screen.fill(color_bg, (x, y, w, h))
 
 def draw_hline(x, y, length):
     x *= 8
