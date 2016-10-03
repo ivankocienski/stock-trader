@@ -98,6 +98,7 @@ class App:
 
     def popup_message(self, text1, text2=None, callback=None):
         self._popup.show(text1, text2, callback)
+        self.repaint()
 
     def set_screen(self, name, old_screen=None): 
         if name == 'old':

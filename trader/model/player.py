@@ -9,6 +9,9 @@ class Player:
         print("buy stock q=%d  c='%s'" % (quantity, company.name))
         
         cost = quantity * company.stock.value
+        if cost > self.funds:
+            return False
+
         print("cost=%d"%cost)
 
         self.funds -= cost
@@ -16,6 +19,8 @@ class Player:
             self.owned_stock[company.stock.symbol] += quantity
         else:
             self.owned_stock[company.stock.symbol] = quantity
+
+        return True
         
     def total_value(self):
         value = 0

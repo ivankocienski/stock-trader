@@ -73,8 +73,10 @@ class BuyStockScreen(BaseScreen):
             self.app.repaint()
 
         if key == ui.key_enter and self.confirm_trade:
-            self.player.buy_stock(self.company, int(self.quantity_string))
-            self.app.set_screen('old')
+            if self.player.buy_stock(self.company, int(self.quantity_string)):
+                self.app.set_screen('old')
+            else:
+                self.app.popup_message("Insufficient funds")
                     
 
         
