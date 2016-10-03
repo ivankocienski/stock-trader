@@ -12,13 +12,8 @@ class CompanyListScreen(BaseScreen):
         self.current_pos = 0
         self.player = player
 
-    def activate(self):
-        super().activate()
-
-        def popup_done():
-            print("The popup has been hidden")
-
-        self.app.popup_message("Hello, World", "You have done a bad bad bad thing here", popup_done)
+#    def activate(self):
+#        super().activate()
 
     def keydown(self, key):
         super().keydown(key)
@@ -56,12 +51,8 @@ class CompanyListScreen(BaseScreen):
 
         ui.set_fg_color(ui.GREY)
         ui.set_bg_color(ui.BLACK)
-        ui.draw_hline(0, 35, 50)
-        ui.draw_vline(29, 10, 10)
 
-        ui.draw_box(5, 5, 20, 10)
-        ui.drawtext(6, 6, "Hello")
-        ui.drawtext(24, 14, "Goodbye")
+        ui.draw_hline(0, 35, 100)
 
         ui.drawtext(0, 36, "Funds=%i Value=%i Date=000"%(self.player.funds, self.player.total_value()))
 
