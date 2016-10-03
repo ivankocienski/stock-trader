@@ -120,4 +120,49 @@ def draw_box(x, y, w, h):
 
 
 
+class Table:
+    """ renders a spreadsheet like table """
+
+    def __init__(self, start_x, start_y, max_width, max_height):
+        self.columns    = []
+        self.start_x    = start_x
+        self.start_y    = start_y
+        self.max_width  = max_width
+        self.max_height = max_height
+
+    def add_column(self, name, width, right_align=False):
+        self.columns.append((name, width, right_align))
+
+    def start_render(self):
+        formatter = '|'
+        column_names = []
+        for col in self.columns:
+            formatter += ' '
+            if col[2]: # right align?
+                formatter += '%%%ds'%col[1] 
+            else:
+                formatter += '%%-%ds'%col[1] 
+
+            formatter += ' |'
+            
+            column_names.append(col[0])
+        
+        self.formatter = formatter
+        self.ypos = self.start_y
+        drawtext(self.start_x, self.ypos, formatter%tuple(column_names))
+        self.ypos += 1
+
+    def needs_rendering(self):
+        return self.ypos <= self.start_y+self.max_height
+
+    def render_next_row(self, row_data, highlight=False):
+        drawtext(self.start_x, self.ypos, self.formatter%row_data)
+        self.ypos += 1
+
+
+
+            
+
+
+
 

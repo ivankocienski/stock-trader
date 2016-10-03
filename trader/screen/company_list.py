@@ -11,9 +11,12 @@ class CompanyListScreen(BaseScreen):
         self.company_list = company_list
         self.current_pos = 0
         self.player = player
+        self.table = ui.Table(0, 1, 100, 34)
 
-#    def activate(self):
-#        super().activate()
+        self.table.add_column("Name", 30)
+        self.table.add_column("Symbol", 10)
+        self.table.add_column("Volume", 10, True)
+        self.table.add_column("Price", 10, True)
 
     def keydown(self, key):
         super().keydown(key)
@@ -37,7 +40,23 @@ class CompanyListScreen(BaseScreen):
         ui.cls()
 
         pos = 0
-        for c in self.company_list:
+
+        self.table.start_render()
+
+        symbols = self.company_list.symbols()
+
+        while self.table.needs_rendering():
+            if pos >= len(symbols):
+                break
+
+            com = self.company_list.lookup(symbols[pos])
+
+            company_data = (
+                    com.name,
+                    com.stock.symbol,
+                    str(com.stock.share_count),
+                    str(com.stock.value))
+                    
             if pos == self.current_pos:
                 ui.set_fg_color(ui.BLACK)
                 ui.set_bg_color(ui.GREEN)
@@ -45,7 +64,8 @@ class CompanyListScreen(BaseScreen):
                 ui.set_fg_color(ui.GREEN)
                 ui.set_bg_color(ui.BLACK)
 
-            ui.drawtext(0, pos, c.name)
+            self.table.render_next_row(company_data)
+
             pos += 1
 
 
