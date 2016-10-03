@@ -89,7 +89,8 @@ class App:
         self._register_screen(
             PlayerStockScreen(
                 self,
-                self.player))
+                self.player,
+                self.companies))
 
         self.set_screen("company_list")
 

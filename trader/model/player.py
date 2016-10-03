@@ -28,3 +28,20 @@ class Player:
             value += quantity * self.company_db.lookup(symbol).stock.value;
 
         return value
+
+    class PlayerIterator:
+        def __init__(self, player_obj):
+            self.symbol_list = list(player_obj.owned_stock.keys())
+            self.symbol_pos  = 0
+            self.player = player_obj
+
+        def __next__(self):
+            if self.symbol_pos >= len(self.symbol_list):
+                raise StopIteration()
+
+            self.symbol_pos += 1
+            sym = self.symbol_list[self.symbol_pos-1]
+            return (sym, self.player.owned_stock[sym])
+
+    def __iter__(self):
+        return self.PlayerIterator(self)
