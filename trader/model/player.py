@@ -21,6 +21,9 @@ class Player:
             self.owned_stock[company.stock.symbol] = quantity
 
         return True
+
+    def owned_stock_symbols(self):
+        return list(self.owned_stock.keys())
         
     def total_value(self):
         value = 0
