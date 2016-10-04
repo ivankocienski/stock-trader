@@ -18,22 +18,44 @@ class PlayerStockScreen(BaseScreen):
         self.table.add_column("Owned", 10, True)
         self.table.add_column("Value", 10, True)
 
+    def activate(self):
+        super().activate()
+        self.current_pos = 0
+        self.player_symbols = self.player.owned_stock_symbols() 
+
     def keydown(self, key):
         super().keydown(key)
+
+        if key == ui.key_up and self.current_pos > 0:
+            self.current_pos -= 1
+            self.app.repaint()
+
+        if key == ui.key_down and self.current_pos < len(self.player_symbols)-1:
+            self.current_pos += 1
+            self.app.repaint()
+
+#        if key == ui.key_b:
+#            symbol  = self.company_list.symbols()[self.current_pos]
+#            company = self.company_list.lookup(symbol)
+#            self.app.screen_objects['buy_stock'].company = company
+#            self.app.set_screen("buy_stock", "company_list")
 
     def paint(self):
         ui.cls()
 
+        ui.set_fg_color(ui.GREY)
+        ui.set_bg_color(ui.BLACK)
+        ui.drawtext(0, 0, "Player Stock")
+
         self.table.start_render()
 
         pos = 0
-        symbols = self.player.owned_stock_symbols() 
 
         while self.table.needs_rendering():
-            if pos >= len(symbols):
+            if pos >= len(self.player_symbols):
                 break
     
-            sym  = symbols[pos]
+            sym  = self.player_symbols[pos]
             com  = self.company_db.lookup(sym)
             owns = self.player.owned_stock[sym]
 
@@ -43,19 +65,14 @@ class PlayerStockScreen(BaseScreen):
                     str(owns),
                     str(owns * com.stock.value))
                     
+            if pos == self.current_pos:
+                ui.set_fg_color(ui.BLACK)
+                ui.set_bg_color(ui.GREEN)
+            else:
+                ui.set_fg_color(ui.GREEN)
+                ui.set_bg_color(ui.BLACK)
+
             self.table.render_next_row(company_data)
 
             pos += 1
 
-
-
-#        for symbol,quantity in self.player:
-#            company = self.company_db.lookup(symbol)
-#            #ui.drawtext(0, pos, symbol)
-#            
-#            text = "%10s %5d %5d"%(company.name, quantity, quantity*company.stock.value)
-#            ui.drawtext(0, pos, text)
-#
-#            pos += 1
-
-        ui.drawtext(0, 0, "Player Stock")

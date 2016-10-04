@@ -9,11 +9,11 @@ class BuyStockScreen(BaseScreen):
     def __init__(self, app, player):
         super().__init__(app);
         self.player = player
-        self.confirm_trade = False
     
     def activate(self):
         super().activate()
         self.quantity_string = ''
+        self.confirm_trade = False 
 
     def keydown(self, key):
         if key == ui.key_escape:
