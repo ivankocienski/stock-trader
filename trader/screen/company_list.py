@@ -33,7 +33,9 @@ class CompanyListScreen(BaseScreen):
             symbol  = self.company_list.symbols()[self.current_pos]
             company = self.company_list.lookup(symbol)
             self.app.screen_objects['buy_stock'].company = company
-            self.app.set_screen("buy_stock", "company_list")
+            self.app.set_screen(
+                    "buy_stock", 
+                    return_to="company_list")
 
     def paint(self):
 

@@ -10,14 +10,14 @@ class BuyStockScreen(BaseScreen):
         super().__init__(app);
         self.player = player
     
-    def activate(self):
-        super().activate()
+    def activate(self, data):
+        super().activate(data)
         self.quantity_string = ''
         self.confirm_trade = False 
 
     def keydown(self, key):
         if key == ui.key_escape:
-            self.app.set_screen('old')
+            self.app.set_screen('return')
 
         if not self.confirm_trade:
             if key == ui.key_0:
@@ -74,7 +74,7 @@ class BuyStockScreen(BaseScreen):
 
         if key == ui.key_enter and self.confirm_trade:
             if self.player.buy_stock(self.company, int(self.quantity_string)):
-                self.app.set_screen('old')
+                self.app.set_screen('return')
             else:
                 self.app.popup_message("Insufficient funds")
                     

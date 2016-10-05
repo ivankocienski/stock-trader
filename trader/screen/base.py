@@ -14,7 +14,7 @@ class BaseScreen:
         elif key == ui.key_f2:
             self.app.set_screen("player_stock")
 
-    def activate(self):
+    def activate(self, data):
         print("activating '%s'"%self.__class__.__name__)
         self.app.repaint()
 

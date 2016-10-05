@@ -18,8 +18,8 @@ class PlayerStockScreen(BaseScreen):
         self.table.add_column("Owned", 10, True)
         self.table.add_column("Value", 10, True)
 
-    def activate(self):
-        super().activate()
+    def activate(self, data):
+        super().activate(data)
         self.current_pos = 0
         self.player_symbols = self.player.owned_stock_symbols() 
 
@@ -38,7 +38,9 @@ class PlayerStockScreen(BaseScreen):
             symbol  = self.player_symbols[self.current_pos]
             company = self.company_db.lookup(symbol)
             self.app.screen_objects['sell_stock'].company = company
-            self.app.set_screen("sell_stock", "player_stock")
+            self.app.set_screen(
+                    "sell_stock",
+                    return_to="player_stock")
 
     def paint(self):
         ui.cls()

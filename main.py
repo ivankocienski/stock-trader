@@ -103,9 +103,23 @@ class App:
         self._popup.show(text1, text2, callback)
         self.repaint()
 
-    def set_screen(self, name, old_screen=None): 
-        if name == 'old':
-            name = self.old_screen
+    def set_screen(self, name, **kwargs): 
+
+        try:
+            data_arg = kwargs['data']
+        except KeyError:
+            data_arg = None
+        
+        try:
+            return_to_screen = kwargs['return_to']
+        except KeyError:
+            return_to_screen = None
+
+        if name == 'return':
+            if self.return_to_screen is None:
+                raise RuntimeError("No return screen set")
+
+            name = self.return_to_screen
 
         if name in self.screen_objects:
             self.current_screen = self.screen_objects[name]
@@ -113,8 +127,8 @@ class App:
         else:
             raise RuntimeError("screen not found '%s'"%name)
 
-        self.old_screen = old_screen
-        self.current_screen.activate()
+        self.return_to_screen = return_to_screen
+        self.current_screen.activate(data_arg)
 
     def run(self):
         print("starting")
