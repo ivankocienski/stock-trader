@@ -7,6 +7,7 @@ import trader.ui as ui
 from trader.screen.company_list import CompanyListScreen
 from trader.screen.player_stock import PlayerStockScreen
 from trader.screen.buy_stock import BuyStockScreen
+from trader.screen.sell_stock import SellStockScreen
 
 from trader.model.company import Company, CompanyDB
 from trader.model.player  import Player
@@ -79,6 +80,7 @@ class App:
         self.screen_objects = dict()
 
         self._register_screen(BuyStockScreen(self, self.player)) 
+        self._register_screen(SellStockScreen(self, self.player)) 
 
         self._register_screen(
             CompanyListScreen(

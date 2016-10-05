@@ -34,11 +34,11 @@ class PlayerStockScreen(BaseScreen):
             self.current_pos += 1
             self.app.repaint()
 
-#        if key == ui.key_b:
-#            symbol  = self.company_list.symbols()[self.current_pos]
-#            company = self.company_list.lookup(symbol)
-#            self.app.screen_objects['buy_stock'].company = company
-#            self.app.set_screen("buy_stock", "company_list")
+        if key == ui.key_s:
+            symbol  = self.player_symbols[self.current_pos]
+            company = self.company_db.lookup(symbol)
+            self.app.screen_objects['sell_stock'].company = company
+            self.app.set_screen("sell_stock", "player_stock")
 
     def paint(self):
         ui.cls()

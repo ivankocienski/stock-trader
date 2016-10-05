@@ -22,6 +22,19 @@ class Player:
 
         return True
 
+    def sell_stock(self, company, quantity):
+        if quantity > self.owned_stock[company.stock.symbol]:
+            return False
+
+        profit = quantity * company.stock.value
+        self.funds += profit
+
+        self.owned_stock[company.stock.symbol] -= quantity
+        if self.owned_stock[company.stock.symbol] == 0:
+            del self.owned_stock[company.stock.symbol]
+
+        return True
+
     def owned_stock_symbols(self):
         return list(self.owned_stock.keys())
         

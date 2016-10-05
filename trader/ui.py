@@ -24,6 +24,7 @@ key_down = pg.K_DOWN
 key_f1   = pg.K_F1
 key_f2   = pg.K_F2
 key_b    = pg.K_b
+key_s    = pg.K_s
 key_backspace = pg.K_BACKSPACE
 
 key_0    = pg.K_0
