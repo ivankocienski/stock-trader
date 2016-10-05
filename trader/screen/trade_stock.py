@@ -1,18 +1,23 @@
 
-
 from trader import ui
 from .base import BaseScreen
 
-class SellStockScreen(BaseScreen):
+class Trade:
+    def __init__(self, **kwargs):
+        self.player  = kwargs['player']
+        self.company = kwargs['company']
+        self.mode    = kwargs['mode']
 
-    screen_name = 'sell_stock'
+class TradeStockScreen(BaseScreen):
 
-    def __init__(self, app, player):
+    screen_name = 'trade_stock'
+
+    def __init__(self, app):
         super().__init__(app);
-        self.player = player
     
     def activate(self, data):
         super().activate(data)
+        self.trade = data
         self.quantity_string = ''
         self.confirm_trade = False 
 
@@ -74,10 +79,22 @@ class SellStockScreen(BaseScreen):
             self.app.repaint()
 
         if key == ui.key_enter and self.confirm_trade:
-            if self.player.sell_stock(self.company, int(self.quantity_string)):
-                self.app.set_screen('return')
-            else:
-                self.app.popup_message("Insufficient stock")
+
+            company = self.trade.company
+            player  = self.trade.player
+
+            if self.trade.mode == 'sell':
+                if player.sell_stock(company, int(self.quantity_string)):
+                    self.app.set_screen('return')
+                else:
+                    self.app.popup_message("Insufficient stock")
+            
+            elif self.trade.mode == 'buy':
+                
+                if player.buy_stock(company, int(self.quantity_string)):
+                    self.app.set_screen('return')
+                else:
+                    self.app.popup_message("Insufficient funds")
                     
 
         
@@ -88,10 +105,16 @@ class SellStockScreen(BaseScreen):
         ui.set_fg_color(ui.GREY)
         ui.set_bg_color(ui.BLACK)
 
-        ui.drawtext(0, 0, "Sell stock")
+        if self.trade.mode == 'sell':
+            ui.drawtext(0, 0, "Sell stock")
+        elif self.trade.mode == 'buy':
+            ui.drawtext(0, 0, "Buy stock")
+        else:
+            raise RuntimeError('Trade mode "%s" not valid, must be either "buy" or "sell"'%self.trade.mode)
 
-        ui.drawtext(2, 2, "Company '%s'" % self.company.name) 
-        ui.drawtext(2, 4, "Share price: %d" % self.company.stock.value) 
+
+        ui.drawtext(2, 2, "Company '%s'" % self.trade.company.name) 
+        ui.drawtext(2, 4, "Share price: %d" % self.trade.company.stock.value) 
 
         if self.confirm_trade:
             ui.set_fg_color(ui.GREY)
@@ -112,5 +135,4 @@ class SellStockScreen(BaseScreen):
             
         ui.drawtext(0, 8, "Confirm order")
 
-        pass
     

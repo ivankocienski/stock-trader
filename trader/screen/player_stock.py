@@ -1,6 +1,7 @@
 
 from trader import ui
 from .base import BaseScreen
+from .trade_stock import Trade
 
 class PlayerStockScreen(BaseScreen):
 
@@ -35,12 +36,16 @@ class PlayerStockScreen(BaseScreen):
             self.app.repaint()
 
         if key == ui.key_s:
-            symbol  = self.player_symbols[self.current_pos]
-            company = self.company_db.lookup(symbol)
-            self.app.screen_objects['sell_stock'].company = company
+            symbol = self.player_symbols[self.current_pos]
+            trade = Trade(
+                player  = self.player,
+                company = self.company_db.lookup(symbol),
+                mode    = 'sell')
+
             self.app.set_screen(
-                    "sell_stock",
-                    return_to="player_stock")
+                    "trade_stock",
+                    return_to="player_stock",
+                    data=trade)
 
     def paint(self):
         ui.cls()

@@ -6,8 +6,7 @@ import trader.ui as ui
 
 from trader.screen.company_list import CompanyListScreen
 from trader.screen.player_stock import PlayerStockScreen
-from trader.screen.buy_stock import BuyStockScreen
-from trader.screen.sell_stock import SellStockScreen
+from trader.screen.trade_stock import TradeStockScreen
 
 from trader.model.company import Company, CompanyDB
 from trader.model.player  import Player
@@ -79,9 +78,6 @@ class App:
         self.screen = pg.display.set_mode((800, 600))
         self.screen_objects = dict()
 
-        self._register_screen(BuyStockScreen(self, self.player)) 
-        self._register_screen(SellStockScreen(self, self.player)) 
-
         self._register_screen(
             CompanyListScreen(
                 self, 
@@ -93,6 +89,10 @@ class App:
                 self,
                 self.player,
                 self.companies))
+        
+        self._register_screen(
+            TradeStockScreen(
+                self))
 
         self.set_screen("company_list")
 
