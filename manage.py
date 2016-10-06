@@ -1,10 +1,27 @@
 
 from sys import argv
+import os
+
+from trader.manage.company_seeder import CompanySeeder
+from trader.manage.database_migrator import DatabaseMigrator
+
+import trader.db as db
 
 class DoDBSetup:
     name = 'db-setup'
     def invoke(self, args):
         print("Setting up database")
+
+        path = os.getcwd()
+        path += '/state/database.sqlite3'
+        db.init(path)
+
+        migrator = DatabaseMigrator()
+        migrator.run()
+
+        seeder = CompanySeeder()
+        seeder.run()
+
 
 class DoHelp:
     name = 'help'
