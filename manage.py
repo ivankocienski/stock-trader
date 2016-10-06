@@ -1,5 +1,6 @@
 
 from sys import argv
+from pathlib import Path
 import os
 
 from trader.manage.company_seeder import CompanySeeder
@@ -14,6 +15,13 @@ class DoDBSetup:
 
         path = os.getcwd()
         path += '/state/database.sqlite3'
+
+        p = Path(path)
+        if p.exists():
+            print("database exists")
+            print("Please delete '%s' and run again"%path)
+            return
+
         db.init(path)
 
         migrator = DatabaseMigrator()

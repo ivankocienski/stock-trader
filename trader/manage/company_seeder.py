@@ -6,7 +6,8 @@ import random
 import trader.db as db
 
 class CompanySeeder:
-    def run(self):
+
+    def _generate_companies(self):
         db.execute_one('delete from company')
 
         companies = []
@@ -32,7 +33,19 @@ class CompanySeeder:
             args = (company[0], company[1])
             db.execute_one(sql, args)
 
-        db.commit()
-
+        db.commit() 
         print("Generated %d companies"%count)
 
+    def _generate_player(self):
+
+        sql = "insert into player (funds) values (?)"
+        args = (1000,)
+        db.execute_one(sql, args)
+
+        db.commit()
+        print("Generated 1 player")
+
+    def run(self):
+
+        self._generate_companies()
+        self._generate_player()

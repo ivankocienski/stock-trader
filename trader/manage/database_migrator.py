@@ -4,6 +4,8 @@ import trader.db as db
 class DatabaseMigrator:
 
     def run(self):
+        
+        # company table
         if db.table_exists('company'):
             print("company exists")
         else:
@@ -14,7 +16,13 @@ class DatabaseMigrator:
                 name="string",
                 symbol="string")
 
-        count = db.count_table('company')
-        print("company has %d rows"%count)
-
-
+        # player table
+        if db.table_exists('player'):
+            print('player exists')
+        else:
+            print('creating player table')
+            db.create_table(
+                "player",
+                id="integer primary key",
+                funds="integer")
+            
