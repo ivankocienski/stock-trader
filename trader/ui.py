@@ -63,7 +63,7 @@ def drawtext(x, y, msg):
     global color_fg
 
     x *= 8
-    y *= 16
+    y *= 14
 
     text_surface = font.render(msg, False, color_fg, color_bg) 
     screen.blit(text_surface, (x, y))
@@ -73,17 +73,17 @@ def fill_box(x, y, w, h):
     global color_bg
 
     x = x *  8
-    y = y * 16
+    y = y * 14
 
     w = (w+1) * 8
-    h = (h+1) * 16
+    h = (h+1) * 14
 
     screen.fill(color_bg, (x, y, w, h))
 
 def draw_hline(x, y, length):
     x *= 8
     length *= 8 
-    y = y * 16 + 8 
+    y = y * 14 + 7
 
     global screen
     global color_fg
@@ -94,8 +94,8 @@ def draw_vline(x, y, length):
     global screen
     global color_fg
 
-    y *= 16
-    length *= 16 
+    y *= 14
+    length *= 14
     x = x * 8 + 4 
 
     pg.draw.line(screen, color_fg, (x, y), (x, y+length), 2)
@@ -106,10 +106,10 @@ def draw_box(x, y, w, h):
     global color_fg
 
     x = x *  8 + 4 
-    y = y * 16 + 8 
+    y = y * 14 + 7
 
     w *= 8
-    h *= 16
+    h *= 14
 
     pg.draw.line(screen, color_fg, (x, y), (x, y+h), 2)
     pg.draw.line(screen, color_fg, (x+w, y), (x+w, y+h), 2)
@@ -161,12 +161,8 @@ class Table:
         pos = 0
         for data in row_data:
             column = self.columns[pos]
-            print_row.append(data[:column[1]])
+            print_row.append(str(data)[:column[1]])
             pos += 1
-
-        #print(self.formatter)
-        #print(row_data)
-        #print(print_row)
 
         drawtext(self.start_x, self.ypos, self.formatter%tuple(print_row))
         self.ypos += 1

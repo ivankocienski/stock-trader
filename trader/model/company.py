@@ -1,20 +1,10 @@
 
 import trader.db as db
 
-#class Stock:
-#    def __init__(self, symbol, share_count, value):
-#        self.symbol      = symbol
-#        self.share_count = share_count
-#        self.value       = value
-        
 
 class Company:
-    #def __init__(self, name, symbol, share_count, value):
-    #    self.stock  = Stock(symbol, share_count, value)
-    #    self.name   = name
 
     def __init__(self, row):
-        #print(row)
         self.db_id = row[0]
         self.name = row[1]
         self.symbol = row[2]
@@ -35,19 +25,10 @@ class Company:
 
         self.share_value = value
 
-        #print(self)
-
     def __str__(self):
         return "<company name='%s', symbol='%s'>"%(self.name, self.symbol)
 
 class CompanyDB:
-    #def __init__(self):
-    #    pass
-    #    self.db = dict()
-
-    #def register(self, symbol, name, volume, price):
-    #    print("Registered company '%s'" % name)
-    #    self.db[symbol] = Company(name, symbol, volume, price)
 
     def symbols(self):
         found = []

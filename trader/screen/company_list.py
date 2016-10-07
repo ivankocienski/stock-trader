@@ -36,7 +36,7 @@ class CompanyListScreen(BaseScreen):
             self.app.repaint()
 
         if key == ui.key_b:
-            symbol  = self.company_list.symbols()[self.current_pos]
+            symbol  = self.symbol_index[self.current_pos]
             trade = Trade(
                 player  = self.player,
                 company = self.company_list.lookup(symbol),
@@ -70,8 +70,8 @@ class CompanyListScreen(BaseScreen):
             company_data = (
                     com.name,
                     sym,
-                    str(com.share_count),
-                    str(com.share_value))
+                    com.share_count,
+                    com.share_value)
                     
             if pos == self.current_pos - self.symbol_index_top:
                 ui.set_fg_color(ui.BLACK)
