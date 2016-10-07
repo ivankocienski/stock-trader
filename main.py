@@ -1,8 +1,11 @@
 #!/usr/bin/python
 
 import pygame as pg
+import os
+from pathlib import Path
 
 import trader.ui as ui
+import trader.db as db
 
 from trader.screen.company_list import CompanyListScreen
 from trader.screen.player_stock import PlayerStockScreen
@@ -64,16 +67,24 @@ class App:
         self.screen_objects[obj.screen_name] = obj
 
     def __init__(self):
+
+        path = os.getcwd()
+        path += '/state/database.sqlite3'
+
+        p = Path(path)
+        if not p.exists():
+            print("database does not exist")
+            print("Please run `manage.py db-setup` first")
+            return
+
+        db.init(path)
+
         pg.init()
         pg.font.init()
 
         self._popup = self.Popup(self)
         self.companies = CompanyDB()
         self.player = Player(self.companies)
-
-        self.companies.register("C1", "Company 1", 100, 100)
-        self.companies.register("C2", "Company 2", 100, 100)
-        self.companies.register("C3", "Company 3", 100, 100)
 
         self.screen = pg.display.set_mode((800, 600))
         self.screen_objects = dict()

@@ -30,7 +30,7 @@ class CompanySeeder:
         count = random.randint(200, 500)
         for company in companies[:count]:
             sql = "insert into company (name, symbol) values (?, ?)"
-            args = (company[0], company[1])
+            args = (company[1], company[0])
             db.execute_one(sql, args)
 
         db.commit() 

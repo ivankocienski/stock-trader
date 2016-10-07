@@ -60,9 +60,9 @@ class CompanyListScreen(BaseScreen):
 
             company_data = (
                     com.name,
-                    com.stock.symbol,
-                    str(com.stock.share_count),
-                    str(com.stock.value))
+                    com.symbol,
+                    str(com.share_count),
+                    str(com.share_value))
                     
             if pos == self.current_pos:
                 ui.set_fg_color(ui.BLACK)

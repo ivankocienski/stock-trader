@@ -14,7 +14,9 @@ class DatabaseMigrator:
                 "company",
                 id="integer primary key",
                 name="string",
-                symbol="string")
+                symbol="string",
+                share_count="integer",
+                share_value="real")
 
         # player table
         if db.table_exists('player'):

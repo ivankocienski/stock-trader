@@ -14,6 +14,11 @@ def execute_one(sql, args=()):
     cur.execute(sql, args)
     return cur.fetchone()
 
+def execute(sql, args=()):
+    global db
+    cur = db.cursor()
+    return cur.execute(sql, args)
+
 def table_exists(name):
     sql = "SELECT name FROM sqlite_master WHERE type='table' AND name=(?)"
     result = execute_one(sql, (name,))

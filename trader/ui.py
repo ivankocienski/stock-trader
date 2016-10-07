@@ -157,7 +157,18 @@ class Table:
         return self.ypos <= self.start_y+self.max_height
 
     def render_next_row(self, row_data, highlight=False):
-        drawtext(self.start_x, self.ypos, self.formatter%row_data)
+        print_row = []
+        pos = 0
+        for data in row_data:
+            column = self.columns[pos]
+            print_row.append(data[:column[1]])
+            pos += 1
+
+        #print(self.formatter)
+        #print(row_data)
+        #print(print_row)
+
+        drawtext(self.start_x, self.ypos, self.formatter%tuple(print_row))
         self.ypos += 1
 
 
