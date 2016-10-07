@@ -3,6 +3,11 @@
 
 import pygame as pg
 
+# char size is 8x14
+
+CHAR_WIDTH = 8
+CHAR_HEIGHT = 14
+
 WHITE  = (255, 255, 255)
 GREY   = (180, 180, 180)
 BLACK  = (  0,   0,   0)

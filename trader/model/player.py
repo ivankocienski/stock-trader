@@ -1,9 +1,17 @@
 
+import trader.db as db
+
 class Player:
     def __init__(self, company_db):
-        self.funds = 1000
         self.owned_stock = dict()
         self.company_db = company_db
+        self.refresh()
+
+    def refresh(self):
+        sql = 'select funds from player'
+        row = db.execute_one(sql)
+        
+        self.funds = int(row[0])
 
     def buy_stock(self, company, quantity):
         print("buy stock q=%d  c='%s'" % (quantity, company.name))
