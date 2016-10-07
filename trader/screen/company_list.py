@@ -10,7 +10,6 @@ class CompanyListScreen(BaseScreen):
     def __init__(self, app, company_list, player):
         super().__init__(app)
         self.company_list = company_list
-        self.current_pos = 0
         self.player = player
         self.table = ui.Table(0, 1, 100, 34)
 
@@ -18,6 +17,12 @@ class CompanyListScreen(BaseScreen):
         self.table.add_column("Symbol", 10)
         self.table.add_column("Volume", 10, True)
         self.table.add_column("Price", 10, True)
+    
+    def activate(self, data):
+        super().activate(data)
+        self.symbol_index = self.company_list.symbols()
+        self.symbol_index_top = 0
+        self.current_pos = 0
 
     def keydown(self, key):
         super().keydown(key)
@@ -26,7 +31,7 @@ class CompanyListScreen(BaseScreen):
             self.current_pos -= 1
             self.app.repaint()
 
-        if key == ui.key_down and self.current_pos < self.company_list.count()-1:
+        if key == ui.key_down and self.current_pos < len(self.symbol_index)-1:
             self.current_pos += 1
             self.app.repaint()
 
@@ -42,29 +47,33 @@ class CompanyListScreen(BaseScreen):
                     return_to="company_list",
                     data = trade)
 
+        # adjust top of view
+        if self.current_pos < self.symbol_index_top:
+            self.symbol_index_top = self.current_pos
+
+        if self.current_pos > (self.symbol_index_top+32):
+            self.symbol_index_top = self.current_pos-32
+        
     def paint(self):
 
         ui.cls()
-
-        pos = 0
-
         self.table.start_render()
 
-        symbols = self.company_list.symbols()
-
+        pos = 0
         while self.table.needs_rendering():
-            if pos >= len(symbols):
+            if pos >= len(self.symbol_index) or pos >= 33:
                 break
 
-            com = self.company_list.lookup(symbols[pos])
+            sym = self.symbol_index[pos + self.symbol_index_top]
+            com = self.company_list.lookup(sym)
 
             company_data = (
                     com.name,
-                    com.symbol,
+                    sym,
                     str(com.share_count),
                     str(com.share_value))
                     
-            if pos == self.current_pos:
+            if pos == self.current_pos - self.symbol_index_top:
                 ui.set_fg_color(ui.BLACK)
                 ui.set_bg_color(ui.GREEN)
             else:
