@@ -28,3 +28,16 @@ class DatabaseMigrator:
                 id="integer primary key",
                 funds="integer")
             
+        # player stock table
+        if db.table_exists('player_stock'):
+            print('player_stock exists')
+        else:
+            print('create player_stock table')
+            db.create_table(
+                'player_stock',
+                id='integer primary key',
+                player_id='integer not null',
+                company_id='integer not null',
+                quantity='integer not null')
+
+        

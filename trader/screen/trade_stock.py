@@ -114,7 +114,7 @@ class TradeStockScreen(BaseScreen):
 
 
         ui.drawtext(2, 2, "Company '%s'" % self.trade.company.name) 
-        ui.drawtext(2, 4, "Share price: %d" % self.trade.company.stock.value) 
+        ui.drawtext(2, 4, "Share price: %d" % self.trade.company.share_value) 
 
         if self.confirm_trade:
             ui.set_fg_color(ui.GREY)
