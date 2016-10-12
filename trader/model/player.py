@@ -77,9 +77,10 @@ class Player:
         self.load()
         
     def save(self):
-        sql  = 'update player set funds=(?)'
-        args = (self.funds,)
+        sql  = 'update player set funds=? where id=?'
+        args = (self.funds, self.db_id)
         db.execute_one(sql, args)
+        db.commit()
 
     #def owned_stock_symbols(self):
     #    symbols = list(self.owned_stock.keys())
@@ -125,11 +126,27 @@ class Player:
             stock = PlayerStock(self, company)
             self.owned_stock[company.symbol] = stock 
 
-        return stock.buy(quantity)
+        okay = stock.buy(quantity)
+        if okay:
+            self.save()
 
-#
-#    def sell_stock(self, company, quantity):
-#        return True
+        return okay
+
+
+    def sell_stock(self, company, quantity):
+        stock = None
+        try:
+            stock = self.owned_stock[company.symbol]
+
+        except KeyError:
+            return False
+
+        okay = stock.sell(quantity)
+        if okay:
+            # TODO: purge records where quantity is zero
+            self.save()
+
+        return okay
 
     def total_value(self):
         value = 0

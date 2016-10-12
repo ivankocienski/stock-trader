@@ -37,8 +37,9 @@ class CompanyDB:
         return found
 
     def lookup(self, symbol):
-        fields = 'id, name, symbol, share_count, share_value'
-        sql = 'SELECT %s from company WHERE symbol=(?)' % fields
+        sql  = 'SELECT id, name, symbol, share_count, share_value'
+        sql += '  FROM company'
+        sql += '  WHERE symbol=?'
         args = (symbol,)
         result = db.execute_one(sql, args)
         if result is None:
