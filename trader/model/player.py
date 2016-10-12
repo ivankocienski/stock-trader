@@ -52,12 +52,15 @@ class PlayerStock():
 
         return True
 
-    def sell(self, quantity):
-        if quantity > self.quantity:
+    def sell(self, sell_quantity):
+        if sell_quantity > self.quantity:
             return False
 
-        profit = quantity * company.stock_value
-        self.player_funds += profit
+        profit = sell_quantity * self.company.share_value
+        self.player.funds += profit
+        self.quantity -= sell_quantity
+        
+        self._save_to_db()
 
         return True
 
