@@ -22,7 +22,7 @@ class PlayerStockScreen(BaseScreen):
     def activate(self, data):
         super().activate(data)
         self.current_pos = 0
-        self.player_symbols = self.player.owned_stock_symbols() 
+        self.player_symbols = self.player.owned_stock_symbols
 
     def keydown(self, key):
         super().keydown(key)
@@ -63,14 +63,13 @@ class PlayerStockScreen(BaseScreen):
                 break
     
             sym  = self.player_symbols[pos]
-            com  = self.company_db.lookup(sym)
-            owns = self.player.owned_stock[sym]
+            owns = self.player.retrieve(sym)
 
             company_data = (
-                    com.name,
+                    owns.company.name,
                     sym,
-                    str(owns),
-                    str(owns * com.stock.value))
+                    str(owns.quantity),
+                    str(owns.value()))
                     
             if pos == self.current_pos:
                 ui.set_fg_color(ui.BLACK)

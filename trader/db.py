@@ -3,16 +3,27 @@ import sqlite3
 
 db = None
 
-def init(path): 
+def _sql_trace(sql):
+    print("SQL: %s"%sql)
+
+def init(path, debug=False): 
     global db
     print("using database '%s'"%path)
     db = sqlite3.connect(path)
+    if debug:
+        db.set_trace_callback(_sql_trace)
 
 def execute_one(sql, args=()):
     global db
     cur = db.cursor()
     cur.execute(sql, args)
     return cur.fetchone()
+
+def execute_id(sql, args=()):
+    global db
+    cur = db.cursor()
+    cur.execute(sql, args) 
+    return cur.lastrowid
 
 def execute(sql, args=()):
     global db

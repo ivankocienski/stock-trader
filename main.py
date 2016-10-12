@@ -77,7 +77,7 @@ class App:
             print("Please run `manage.py db-setup` first")
             return
 
-        db.init(path)
+        db.init(path, True)
 
         pg.init()
         pg.font.init()

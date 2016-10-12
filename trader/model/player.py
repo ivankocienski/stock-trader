@@ -6,6 +6,35 @@ class PlayerStock():
         self.company  = company
         self.player   = player
         self.quantity = 0
+        self.db_id    = None
+        
+        sql  = 'select player_stock.id, quantity'
+        sql += '  from player_stock, company'
+        sql += '  where company.id=company_id and company.symbol=(?)'
+        args = (company.symbol,)
+        row = db.execute_one(sql, args)
+        if row: 
+            print("player_stock: company already exists")
+            self.quantity = row[1]
+            self.db_id = row[0]
+
+    def _save_to_db(self):
+        if self.db_id:
+            sql  = 'update player_stock'
+            sql += '  set quantity=(?)'
+            sql += '  where id=(?)'
+            args = (self.quantity, self.db_id)
+            db.execute_one(sql, args)
+
+        else:
+            sql  = 'insert into player_stock'
+            sql += '  (company_id, player_id, quantity)'
+            sql += '  values (?, ?, ?)'
+            args = (self.company.db_id, self.player.db_id, self.quantity)
+            self.db_id = db.execute_id(sql, args)
+            print("player_stock: save_to_db: INSERT id=%s"%self.db_id)
+
+        db.commit()
 
     def buy(self, buy_quantity): 
         print("buy stock q=%d  c='%s'" % (buy_quantity, self.company.name))
@@ -19,6 +48,8 @@ class PlayerStock():
         self.player.funds -= cost
         self.quantity += buy_quantity
 
+        self._save_to_db() 
+
         return True
 
     def sell(self, quantity):
@@ -30,6 +61,9 @@ class PlayerStock():
 
         return True
 
+    def value(self):
+        return self.quantity * self.company.share_value
+
     def is_zero(self):
         return self.quantity == 0
 
@@ -37,7 +71,9 @@ class Player:
     def __init__(self, company_db):
         self.owned_stock = dict()
         self.company_db = company_db
+        self.db_id = 0
         self.funds = 0
+        self.owned_stock_symbols = []
         self.load()
         
     def save(self):
@@ -45,28 +81,39 @@ class Player:
         args = (self.funds,)
         db.execute_one(sql, args)
 
+    #def owned_stock_symbols(self):
+    #    symbols = list(self.owned_stock.keys())
+    #    symbols.sort()
+    #    return symbols
+
+    def retrieve(self, symbol):
+        stock = None 
+        try:
+            stock = self.owned_stock[symbol]
+
+        except KeyError:
+            company = self.company_db.lookup(symbol)
+            stock = PlayerStock(self, company)
+            if stock:
+                self.owned_stock[symbol] = stock 
+            else:
+                return None
+
+        return stock
+
     def load(self):
-        sql = 'select funds from player'
+        sql = 'select id, funds from player'
         row = db.execute_one(sql)
         
-        self.funds = int(row[0])
-        self.owned_stock_symbols = []
+        self.db_id = int(row[0])
+        self.funds = int(row[1])
 
         # oh to have a nice s-exp DSL about now -.-
-        sql = 'select company.symbol from player_stock, company where company_id = company.id order by symbol'
+        sql  = 'select company.symbol'
+        sql += '  from player_stock, company'
+        sql += '  where company_id = company.id order by symbol'
         for row in db.execute(sql):
             self.owned_stock_symbols.append(row[0])
-
-#    def _retrieve_stock(self, symbol):
-#        try:
-#            return self.owned_stock[symbol]
-#
-#        except KeyError:
-#            ps = PlayerStock(symbol)
-#            self.owned_stock[symbol] = ps
-#            return ps
-
-        
 
     def buy_stock(self, company, quantity):
         stock = None
@@ -86,8 +133,10 @@ class Player:
 
     def total_value(self):
         value = 0
-        #for symbol, quantity in self.owned_stock.items():
-        #    value += quantity * self.company_db.lookup(symbol).stock.value;
+        print("total_value")
+        print(self.owned_stock)
+        for symbol, stock in self.owned_stock.items():
+            value += stock.value()
 
         return value
 
