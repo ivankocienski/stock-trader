@@ -22,6 +22,7 @@ class PlayerStockScreen(BaseScreen):
     def activate(self, data):
         super().activate(data)
         self.current_pos = 0
+        self.symbol_index_top = 0
         self.player_symbols = self.player.owned_stock_symbols
 
     def keydown(self, key):
@@ -47,6 +48,13 @@ class PlayerStockScreen(BaseScreen):
                     return_to="player_stock",
                     data=trade)
 
+        # adjust top of view
+        if self.current_pos < self.symbol_index_top:
+            self.symbol_index_top = self.current_pos
+
+        if self.current_pos > (self.symbol_index_top+32):
+            self.symbol_index_top = self.current_pos-32
+
     def paint(self):
         ui.cls()
 
@@ -59,10 +67,10 @@ class PlayerStockScreen(BaseScreen):
         pos = 0
 
         while self.table.needs_rendering():
-            if pos >= len(self.player_symbols):
+            if pos >= len(self.player_symbols) or pos >= 33:
                 break
-    
-            sym  = self.player_symbols[pos]
+
+            sym  = self.player_symbols[pos+self.symbol_index_top]
             owns = self.player.retrieve(sym)
 
             company_data = (
@@ -71,7 +79,7 @@ class PlayerStockScreen(BaseScreen):
                     str(owns.quantity),
                     str(owns.value()))
                     
-            if pos == self.current_pos:
+            if pos == self.current_pos - self.symbol_index_top:
                 ui.set_fg_color(ui.BLACK)
                 ui.set_bg_color(ui.GREEN)
             else:

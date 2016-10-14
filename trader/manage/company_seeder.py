@@ -51,3 +51,26 @@ class CompanySeeder:
 
         self._generate_companies()
         self._generate_player()
+
+
+    def fake_player_stock(self):
+
+        company_ids = []
+        for com in db.execute('select id from company'):
+            company_ids.append(int(com[0]))
+
+        player_id = int(db.execute_one('select id from player')[0])
+
+        print("company_ids count %d"%len(company_ids))
+        print("player_id=%d"%player_id)
+
+        for cid in company_ids:
+            sql = "insert into player_stock"
+            sql += "  (company_id, player_id, quantity)"
+            sql += "  values (?, ?, ?)"
+            args = (cid, player_id, random.randint(2, 20))
+            db.execute_one(sql, args)
+
+        db.commit()
+
+

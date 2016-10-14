@@ -30,6 +30,7 @@ class DoDBSetup:
         seeder = CompanySeeder()
         seeder.run()
 
+        seeder.fake_player_stock()
 
 class DoHelp:
     name = 'help'
