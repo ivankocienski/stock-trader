@@ -10,6 +10,7 @@ import trader.db as db
 from trader.screen.company_list import CompanyListScreen
 from trader.screen.player_stock import PlayerStockScreen
 from trader.screen.trade_stock import TradeStockScreen
+from trader.screen.company_info import CompanyInfoScreen
 
 from trader.model.company import Company, CompanyDB
 from trader.model.player  import Player
@@ -103,6 +104,10 @@ class App:
         
         self._register_screen(
             TradeStockScreen(
+                self))
+
+        self._register_screen(
+            CompanyInfoScreen(
                 self))
 
         self.set_screen("company_list")

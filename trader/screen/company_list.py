@@ -47,6 +47,15 @@ class CompanyListScreen(BaseScreen):
                     return_to="company_list",
                     data = trade)
 
+        if key == ui.key_enter:
+            symbol  = self.symbol_index[self.current_pos]
+            company = self.company_list.lookup(symbol)
+
+            self.app.set_screen(
+                    "company_info", 
+                    return_to="company_list",
+                    data = company)
+
         # adjust top of view
         if self.current_pos < self.symbol_index_top:
             self.symbol_index_top = self.current_pos
