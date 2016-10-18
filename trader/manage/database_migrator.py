@@ -18,6 +18,21 @@ class DatabaseMigrator:
                 share_count="integer",
                 share_value="real")
 
+        # trading period table
+        if db.table_exists('trading_period'):
+            print("trading_period exists")
+        else:
+            db.create_table(
+                'trading_period',
+                id='integer primary key',
+                company_id='integer not null',
+                duration='integer not null',
+                start_time='real',
+                val_open='real',
+                val_close='real',
+                val_high='real',
+                val_low='real')
+
         # player table
         if db.table_exists('player'):
             print('player exists')
