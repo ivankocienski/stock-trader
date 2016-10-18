@@ -172,10 +172,46 @@ class Table:
         drawtext(self.start_x, self.ypos, self.formatter%tuple(print_row))
         self.ypos += 1
 
+class Graph:
+    def __init__(self, min_y, val_range):
+        self.min_y = min_y
+        self.val_range = val_range
 
+    def draw_line(self, x1, y1, x2, y2, color=(255, 255, 255)):
+        global screen
 
-            
+        if self.val_range == 0:
+            return 
 
+        y_high = (y1 - self.min_y) / self.val_range 
+        y_high = 600 - int(y_high * 600)
 
+        y_low  = (y2 - self.min_y) / self.val_range 
+        y_low  = 600 - int(y_low * 600)
 
+        p1 = (x1, y_high)
+        p2 = (x2, y_low)
+
+        pg.draw.line(screen, color, p1, p2)
+
+    def fill_box(self, x1, y1, x2, y2, color=(255, 255, 255)):
+        global screen
+
+        if self.val_range == 0:
+            return 
+
+        y1 = (y1 - self.min_y) / self.val_range
+        y1 = 600 - int(y1 * 600)
+
+        y2 = (y2 - self.min_y) / self.val_range
+        y2 = 600 - int(y2 * 600)
+
+        if y1 > y2:
+            y1, y2 = y2, y1
+
+        height = y2 - y1
+        width  = x2 - x1
+
+        rect = (x1, y1, width, height)
+        screen.fill(color, rect)
 

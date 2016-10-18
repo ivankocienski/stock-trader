@@ -1,5 +1,6 @@
 
 import trader.db as db
+from .trading_period import TradingPeriod
 
 
 class Company:
@@ -24,6 +25,9 @@ class Company:
             value = int(value)
 
         self.share_value = value
+
+    def trading_periods(self):
+        return TradingPeriod.find_for_company(self.db_id)
 
     def __str__(self):
         return "<company name='%s', symbol='%s'>"%(self.name, self.symbol)
