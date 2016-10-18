@@ -37,6 +37,27 @@ class DoHelp:
     def invoke(self, args):
         print("help")
 
+class DoDBStats:
+    name = 'db-stats'
+
+    def _count_table(self, name):
+        sql = 'select count(*) from %s'%name
+        count = db.execute_one(sql)[0]
+        print("%s count %s"%(name, count))
+
+    def invoke(self, args):
+        print("DB Stats")
+
+        path = os.getcwd()
+        path += '/state/database.sqlite3'
+        db.init(path)
+
+        self._count_table('company')
+        self._count_table('player')
+        self._count_table('player_stock')
+        self._count_table('trading_period')
+
+
 class Manager:
 
     def _register_command(self, obj):
@@ -55,6 +76,7 @@ class Manager:
 
         self._register_command(DoHelp)
         self._register_command(DoDBSetup)
+        self._register_command(DoDBStats)
 
     def run(self):
         args = argv[1:]
